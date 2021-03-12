@@ -22,6 +22,7 @@ function createTextElement(text) {
 
 const Didact = {
   createElement,
+  render,
 };
 
 //tell babel to use our createElement function and not React's (since we're using jsx here)
@@ -32,3 +33,9 @@ const element = (
     <b />
   </div>
 );
+
+function render(element, container) {
+  //create dom nodes
+}
+
+Didact.render(element, container);
