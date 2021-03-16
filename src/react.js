@@ -20,6 +20,20 @@ function createTextElement(text) {
   };
 }
 
+let nextUnitOfWork = null;
+
+function workLoop(deadline) {
+  while (nextUnitOfWork && !shouldYield) {
+    nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
+    shouldYield = deadline.timeRemaining() < 1;
+  }
+  requestIdleCallback(workLoop);
+}
+
+requestIdleCallback(workLoop);
+
+function performUnitOfWork(nextUnitOfWork) {}
+
 const Didact = {
   createElement,
   render,
