@@ -27,6 +27,9 @@ function workLoop(deadline) {
     nextUnitOfWork = performUnitOfWork(nextUnitOfWork);
     shouldYield = deadline.timeRemaining() < 1;
   }
+
+  if (!nextUnitOfWork && wipRoot) commitRoot();
+
   requestIdleCallback(workLoop);
 }
 
@@ -35,8 +38,6 @@ requestIdleCallback(workLoop);
 function performUnitOfWork(fiber) {
   //Add DOM node
   if (!fiber.dom) fiber.dom = createDom(fiber);
-
-  if (fiber.parent) fiber.parent.appendChild(fiber.dom);
 
   //Create new fibers
   const elements = fiber.props.children;
@@ -101,15 +102,21 @@ function createDom(fiber) {
 }
 
 let nextUnitOfWork = null;
+let wipRoot = null;
+
+function commitRoot() {
+  //add nodes to dom
+}
 
 function render(element, container) {
   //set next unit of work
-  nextUnitOfWork = {
+  wipRoot = {
     dom: container,
     props: {
       children: element,
     },
   };
+  nextUnitOfWork = wipRoot;
 }
 
 Didact.render(element, container);
