@@ -106,6 +106,8 @@ let wipRoot = null;
 
 function commitRoot() {
   //add nodes to dom
+  commitWork(wipRoot.child);
+  wipRoot = null;
 }
 
 function render(element, container) {
